@@ -1,9 +1,17 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1><Camera /></h1>
   </div>
 </template>
+<script>
+import Camera from '../components/Camera.vue'
 
+export default {
+  components: {
+    Camera
+  }
+}
+</script>
 <style>
 @media (min-width: 1024px) {
   .about {

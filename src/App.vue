@@ -1,10 +1,11 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+import { RouterLink, RouterView } from "vue-router";
+import HelloWorld from "@/components/HelloWorld.vue";
+import classNames from "classnames";
 </script>
 
 <template>
-  <header>
+  <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
@@ -15,15 +16,25 @@ import HelloWorld from '@/components/HelloWorld.vue'
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
-  </header>
-
-  <RouterView />
+  </header> -->
+  <main class="h-screen bg-slate-100 text-slate-800">
+    <div class="h-10pc">
+      <div class="flex items-center justify-center text-xl">
+        <RouterLink :class="classNames('m-4', { 'bg-red-500': true })" to="/"
+          >Home</RouterLink
+        >
+        |
+        <RouterLink class="m-4" to="/about">About</RouterLink>
+      </div>
+    </div>
+    <RouterView class="h-90pc" />
+  </main>
 </template>
 
 <style>
-@import '@/assets/base.css';
+@import "@/assets/base.css";
 
-#app {
+/* #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -115,5 +126,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>
