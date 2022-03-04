@@ -1,15 +1,7 @@
 <template>
   <main class="w-full block">
     <div
-      class="
-        w-full
-        h-70pc
-        bg-slate-200
-        relative
-        flex
-        items-center
-        justify-center
-      "
+      class="w-full h-70pc bg-slate-200 relative flex items-center justify-center"
     >
       <div class="relative">
         <video
@@ -62,17 +54,10 @@
       </div>
     </div>
     <div class="bg-slate-300 w-full h-30pc flex">
-      <div v-for="index in 3" :key="index"
-        class="
-          h-max
-          my-4
-          mx-2
-          w-20
-          bg-white
-          rounded-lg
-          shadow-md
-          bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br
-        "
+      <div
+        v-for="index in 3"
+        :key="index"
+        class="h-max my-4 mx-2 w-20 bg-white rounded-lg shadow-md bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br"
       >
         <a href="#">
           <img
@@ -83,22 +68,14 @@
         </a>
         <div class="p-1">
           <h5
-            class="
-              mb-1
-              text-[14px]
-              font-bold
-              tracking-tight
-              text-white
-              text-center
-            "
+            class="mb-1 text-[14px] font-bold tracking-tight text-white text-center"
           >
             Peter
           </h5>
           <p class="mb-1 font-normal text-white text-[10px] text-center">
-            Check in time: <br/>
+            Check in time: <br />
             3:07PM
           </p>
-
         </div>
       </div>
     </div>
@@ -255,5 +232,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
