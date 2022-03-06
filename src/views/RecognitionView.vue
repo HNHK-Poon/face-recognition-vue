@@ -33,7 +33,9 @@ import { format } from 'date-fns';
                     v-if="isGateOpen"
                     :class="'absolute w-full h-full bg-slate-500/50 text-center justify-center items-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex'"
                 >
-                    <div class="w-40 h-20 text-slate-500 font-bold bg-white rounded-xl text-center justify-center items-center flex">
+                    <div
+                        class="w-40 h-20 text-slate-500 font-bold bg-white rounded-xl text-center justify-center items-center flex"
+                    >
                         <svg
                             role="status"
                             class="inline mr-2 w-8 h-8 text-gray-200 animate-spin fill-white"
@@ -135,6 +137,15 @@ export default {
                     component.isGateOpen = false;
                 }, 5000);
                 console.log(eventJson);
+            } else if (eventType == 'userNotDetected') {
+                const boundingBox = eventJson.data.faceLocations;
+                component.top = boundingBox[0];
+                component.left = boundingBox[3];
+                component.width = boundingBox[1] - boundingBox[3];
+                component.height = boundingBox[2] - boundingBox[0];
+                if (component.camera) {
+                    component.isBoundingBox = true;
+                }
             } else {
                 component.top = 0;
                 component.left = 0;
