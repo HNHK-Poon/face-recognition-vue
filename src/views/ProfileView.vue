@@ -17,7 +17,7 @@ import UserCard from '../components/UserCard.vue';
         :employeeId="this.idToDelete"
     />
     <div class="h-90pc w-full bg-slate-300">
-        <div class="h-full w-60pc flex items-center justify-center">
+        <div class="h-full w-full flex items-center justify-center">
             <div
                 class="h-90pc w-95pc p-4 rounded-xl bg-slate-200 flex flex-wrap overflow-auto"
             >
@@ -33,7 +33,7 @@ import UserCard from '../components/UserCard.vue';
                 />
                 <div
                     @click="toggleRegisterUserModal"
-                    class="m-2 rounded-xl w-40 h-60 bg-gradient-to-r from-slate-400 via-slate-500 to-slate-600 flex justify-center items-center"
+                    class="m-2 rounded-xl w-40 h-72 bg-gray-900 flex justify-center items-center"
                 >
                     <button>
                         <svg

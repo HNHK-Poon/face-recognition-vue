@@ -1,31 +1,31 @@
 <template>
     <div
-        class="h-max my-2 mx-2 w-40 bg-white rounded-lg shadow-md bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br"
+        class="h-max my-2 mx-2 w-48 h-72 rounded-lg shadow-md bg-gray-900 hover:bg-gradient-to-br"
     >
         <a href="#">
             <img class="rounded-t-lg" :src="image64" alt="" />
         </a>
         <div class="p-1">
             <h5
-                class="mb-1 text-[18px] font-bold tracking-tight text-white text-center"
+                class="mb-4 text-[18px] font-bold tracking-tight text-cyan-400 text-center"
             >
                 {{ name }}
             </h5>
-            <p class="mb-1 font-bold text-white text-[12px] text-center">
+            <p class="mb-4 font-bold text-white text-[12px] text-center">
                 {{ position }}
             </p>
-            <p class="mb-1 font-normal text-slate-100 text-[10px] text-center">
+            <p class="mb-4 font-normal text-slate-100 text-[10px] text-center">
                 Created at <br />
                 {{ createdAt }}
             </p>
-            <div class="mx-auto w-12 h-12 flex justify-center items-center">
+            <div class="mx-auto w-8 h-8 flex justify-center items-center my-2">
                 <button
                     @click="handleDeleteUser"
                     type="button"
-                    class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-auto"
+                    class="text-white bg-red-400 hover:bg-red-600 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-auto"
                 >
                     <svg
-                        class="w-6 h-6"
+                        class="w-4 h-4"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
