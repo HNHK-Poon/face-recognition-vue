@@ -9,9 +9,7 @@ import { format } from 'date-fns';
     >
         <form @submit.prevent="handleSubmit">
             <div class="px-4 w-full h-full md:h-auto mx-auto">
-                <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow">
-                    <!-- Modal header -->
                     <div
                         class="flex justify-between items-start p-5 rounded-t border-b"
                     >
@@ -21,7 +19,10 @@ import { format } from 'date-fns';
                             Register New User
                         </h3>
                         <button
+                            v-if="camera"
                             @click="$emit('closeRegisterModal')"
+                            type="button"
+                            @click.stop.prevent
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                         >
                             <svg
@@ -38,7 +39,6 @@ import { format } from 'date-fns';
                             </svg>
                         </button>
                     </div>
-                    <!-- Modal body -->
                     <div class="p-6 space-y-6 flex justify-center items-center">
                         <div class="h-[240px] w-[420px]">
                             <video
@@ -117,8 +117,6 @@ import { format } from 'date-fns';
                             </div>
                         </div>
                     </div>
-
-                    <!-- Modal footer -->
                     <div
                         class="flex items-center justify-center p-6 space-x-2 rounded-b border-t border-gray-200"
                     >
@@ -157,19 +155,30 @@ import { format } from 'date-fns';
 export default {
     data() {
         return {
+            // form input variable
             name: '',
             position: '',
             employeeId: '',
+
+            // button text
             takePhotoButtonText: 'Take Photo',
+
+            // flag for photo taken and camera
             isPhotoTaken: false,
+            camera: false,
+
+            // image and socket elements
             imgData: null,
             socket: null,
+
+            // list of error messages to prompt when submit
             errors: [],
         };
     },
     props: ['userIds'],
     methods: {
         createCameraElement() {
+            // Camera settings (e.g. enable audio, camera output height & width)
             const constraints = (window.constraints = {
                 audio: false,
                 video: {
@@ -182,6 +191,7 @@ export default {
                 .getUserMedia(constraints)
                 .then((stream) => {
                     this.$refs.camera.srcObject = stream;
+                    this.camera = true;
                 })
                 .catch((error) => {
                     alert(
@@ -189,33 +199,21 @@ export default {
                     );
                 });
         },
+
         takePhoto() {
-            if (!this.isPhotoTaken) {
-                this.isShotPhoto = true;
-
-                const FLASH_TIMEOUT = 50;
-
-                setTimeout(() => {
-                    this.isShotPhoto = false;
-                }, FLASH_TIMEOUT);
-            }
-
             this.isPhotoTaken = !this.isPhotoTaken;
 
+            // get 2d image from camera element, size: 420px * 240px
             const context = this.$refs.canvas.getContext('2d');
             context.drawImage(this.$refs.camera, 0, 0, 420, 240);
             this.imgData = context.getImageData(0, 0, 420, 240);
         },
+
         checkSumbit() {
             return new Promise((resolve, reject) => {
                 this.errors = [];
 
-                console.log(
-                    this.userIds,
-                    this.employeeId,
-                    this.userIds.includes(this.employeeId)
-                );
-
+                // prompt error message if user Id is used
                 if (this.userIds.includes(this.employeeId)) {
                     this.errors.push('Employee ID is used. Try again.');
                 }
@@ -227,39 +225,21 @@ export default {
                 }
             });
         },
-        async handleSubmit() {
-            // if (await this.checkSumbit()) {
-            //     const img64uri = this.$refs.canvas.toDataURL('image/jpeg', 0.5);
-            //     let filteredData = this.imgData.data.filter(function (_, i) {
-            //         return (i + 1) % 4;
-            //     });
-            //     // console.log(filteredData.length);
-            //     let typedArray = Array.prototype.slice.call(filteredData);
-            //     var imageArray = Array.from(typedArray);
-            //     let postData = {
-            //         eventType: 'register',
-            //         data: {
-            //             name: this.name,
-            //             position: this.position,
-            //             employeeId: this.employeeId,
-            //             imageArray: imageArray,
-            //             image64: img64uri,
-            //             timestamp: new Date().getTime(),
-            //             createdAt: format(new Date(), 'dd/MM/yy hh:mmaa'),
-            //         },
-            //     };
-            //     console.log(postData);
-            //     this.socket.send(JSON.stringify(postData));
-            //     this.$emit('closeRegisterModal');
-            // }
 
+        async handleSubmit() {
             if (await this.checkSumbit()) {
+
+                // Convert image from rgba to rgb (by filter out the last reading)
                 const img64uri = this.$refs.canvas.toDataURL('image/jpeg', 0.5);
                 let filteredData = this.imgData.data.filter(function (_, i) {
                     return (i + 1) % 4;
                 });
+
+                // Convert image into array
                 let typedArray = Array.prototype.slice.call(filteredData);
                 var imageArray = Array.from(typedArray);
+
+                // Call API to register user
                 const postData = {
                     name: this.name,
                     position: this.position,
@@ -289,23 +269,6 @@ export default {
                 }
             }
         },
-    },
-    created: function () {
-        let component = this;
-        console.log('Starting connection to WebSocket Server');
-        this.socket = new WebSocket('ws://localhost:8000/ws');
-
-        this.socket.onmessage = function (event) {
-            let eventJson = JSON.parse(event.data);
-            console.log(eventJson);
-        };
-
-        this.socket.onopen = function (event) {
-            console.log(event);
-            console.log(
-                'Successfully connected to the echo websocket server...'
-            );
-        };
     },
     mounted: function () {
         this.createCameraElement();

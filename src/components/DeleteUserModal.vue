@@ -3,9 +3,7 @@
         class="absolute h-90pc flex right-0 left-0 z-10 justify-center items-center bg-slate-500/75"
     >
         <div class="relative px-4 w-full max-w-md h-full md:h-auto">
-            <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow">
-                <!-- Modal header -->
                 <div class="flex justify-end p-2">
                     <button
                         @click="$emit('closeUserModal')"
@@ -26,7 +24,6 @@
                         </svg>
                     </button>
                 </div>
-                <!-- Modal body -->
                 <div class="p-6 pt-0 text-center">
                     <svg
                         class="mx-auto mb-4 w-14 h-14 text-gray-400 "

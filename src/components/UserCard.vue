@@ -47,7 +47,6 @@ export default {
     props: ['name', 'position', 'employeeId', 'createdAt', 'image64'],
     methods: {
         handleDeleteUser() {
-            // this.$emit('deleteUser', this.employeeId);
             this.$emit('openDeleteUserModal', {
               employeeId: this.employeeId
             });

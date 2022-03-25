@@ -56,70 +56,76 @@ import UserCard from '../components/UserCard.vue';
 export default {
     data() {
         return {
+            // flag to show/hide modal component
             isRegisterModal: false,
             isDeleteModal: false,
+
+            // list of registered users
             users: [],
             user_ids: [],
+            
             idToDelete: null,
         };
     },
+    // Components used in this view
     components: [UserCard, RegisterUserModal, DeleteUserModal],
+
     async created() {
-        console.log('created profile');
+        // retrieve registered user from database
         this.users = await this.getUser();
-        this.users.map((user, index) => {
+
+        // push all employeeId into user_ids list to avoid duplicated Id being created
+        this.users.map((user) => {
             this.user_ids.push(user.employeeId);
         });
     },
     methods: {
+        // toggle register user modal
         async toggleRegisterUserModal(e) {
-            console.log('register model toggle', this.isRegisterModal);
             this.isRegisterModal = !this.isRegisterModal;
+            // update the user list when register form is submitted
             setTimeout(this.updateUsers, 1000);
         },
+        // toggle delete  user modal
         async toggleDeleteUserModal(employeeId) {
             this.idToDelete = employeeId;
             this.isDeleteModal = !this.isDeleteModal;
+            // update the user list when user is deleted
             setTimeout(this.updateUsers, 1000);
         },
+
+        // API call to get user list
         async getUser() {
             try {
                 const res = await fetch(`http://localhost:8000/getUsers`);
                 const data = await res.json();
-                console.log('response', data);
                 if (!res.ok) {
                     const message = `An error has occured: ${res.status} - ${res.statusText}`;
                     throw new Error(message);
                 }
                 return data;
             } catch (err) {
-                this.postResult = err.message;
+                console.log('ERROR: get user', err);
             }
         },
+
+        // Update latest user list 
         async updateUsers() {
-            try {
-                console.log('updating user');
-                const res = await fetch(`http://localhost:8000/getUsers`);
-                const data = await res.json();
-                while (this.users.length > 0) {
-                    this.users.pop();
-                }
-                data.map((user, index) => {
-                    console.log(user);
-                    this.users.push(user);
-                });
-                if (!res.ok) {
-                    const message = `An error has occured: ${res.status} - ${res.statusText}`;
-                    throw new Error(message);
-                }
-                return data;
-            } catch (err) {
-                this.postResult = err.message;
+            const data = await this.getUser();
+
+            // pop and push user to trigger rendering in Vue
+            while (this.users.length > 0) {
+                this.users.pop();
             }
+            data.map((user, index) => {
+                console.log(user);
+                this.users.push(user);
+            });
         },
+
+        // API call to delete user in database
         async deleteUser(emitData) {
             try {
-                console.log('post delete user:', emitData.employeeId);
                 let postData = {
                     employeeId: emitData.employeeId,
                 };
@@ -131,7 +137,6 @@ export default {
                     body: JSON.stringify(postData),
                 });
                 const data = await res.json();
-                console.log('response for delete user:', data);
                 if (!res.ok) {
                     const message = `An error has occured: ${res.status} - ${res.statusText}`;
                     throw new Error(message);
@@ -145,4 +150,3 @@ export default {
 </script>
 
 <style></style>
-UserCardUserCard
